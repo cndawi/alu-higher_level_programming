@@ -5,5 +5,7 @@ import requests
 
 
 if __name__ == "__main__":
-    r = requests.post(sys.argv.__getitem__(1), data={"email": sys.argv.__getitem__(2)})
+    url = sys.argv.__getitem__(1)
+    email = sys.argv.__getitem__(2)
+    r = requests.post(url, data={"email": email})
     print(r.text)
