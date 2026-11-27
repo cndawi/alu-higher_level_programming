@@ -76,15 +76,20 @@ class TestSquare(unittest.TestCase):
         s4 = Square.create(**{'id': 89, 'size': 1, 'x': 2, 'y': 3})
         self.assertEqual(s4.y, 3)
 
-        self.assertEqual(Square.load_from_file(), [])
+        self.assertEqual(Square.load_from_file(), list())
+
         Square.save_to_file(None)
-        self.assertEqual(Square.load_from_file(), [])
-        Square.save_to_file([])
-        self.assertEqual(Square.load_from_file(), [])
-        Square.save_to_file([Square(1)])
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+        Square.save_to_file(list())
+        with open("Square.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+        Square.save_to_file(list((Square(1),)))
         loaded = Square.load_from_file()
         self.assertEqual(len(loaded), 1)
-        self.assertEqual(loaded[0].size, 1)
+        self.assertEqual(loaded.__getitem__(0).size, 1)
 
 
 if __name__ == "__main__":

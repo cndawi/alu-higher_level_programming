@@ -115,15 +115,21 @@ class TestRectangle(unittest.TestCase):
                                  'x': 3, 'y': 4})
         self.assertEqual(r5.y, 4)
 
-        self.assertEqual(Rectangle.load_from_file(), [])
+        self.assertEqual(Rectangle.load_from_file(), list())
+
         Rectangle.save_to_file(None)
-        self.assertEqual(Rectangle.load_from_file(), [])
-        Rectangle.save_to_file([])
-        self.assertEqual(Rectangle.load_from_file(), [])
-        Rectangle.save_to_file([Rectangle(1, 2)])
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+        Rectangle.save_to_file(list())
+        with open("Rectangle.json", "r") as f:
+            self.assertEqual(f.read(), "[]")
+
+        Rectangle.save_to_file(list((Rectangle(1, 2),)))
         loaded = Rectangle.load_from_file()
         self.assertEqual(len(loaded), 1)
-        self.assertEqual((loaded[0].width, loaded[0].height), (1, 2))
+        self.assertEqual(loaded.__getitem__(0).width, 1)
+        self.assertEqual(loaded.__getitem__(0).height, 2)
 
 
 if __name__ == "__main__":
